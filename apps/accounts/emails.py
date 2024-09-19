@@ -15,6 +15,13 @@ class EmailThread(threading.Thread):
         self.email.send()
 
 
+def send_email(email):
+    if settings.DEBUG:
+        EmailMessage(email).start()
+    else:
+        email.send()
+
+
 class Util:
     async def send_activation_otp(user):
         subject = "Verify your email"
@@ -34,7 +41,7 @@ class Util:
 
         email_message = EmailMessage(subject=subject, body=message, to=[user.email])
         email_message.content_subtype = "html"
-        EmailThread(email_message).start()
+        send_email(email_message)
 
     async def send_password_change_otp(user):
         subject = "Your account password reset email"
@@ -54,8 +61,7 @@ class Util:
 
         email_message = EmailMessage(subject=subject, body=message, to=[user.email])
         email_message.content_subtype = "html"
-
-        EmailThread(email_message).start()
+        send_email(email_message)
 
     def password_reset_confirmation(user):
         subject = "Password Reset Successful!"
@@ -67,7 +73,7 @@ class Util:
         )
         email_message = EmailMessage(subject=subject, body=message, to=[user.email])
         email_message.content_subtype = "html"
-        EmailThread(email_message).start()
+        send_email(email_message)
 
     @staticmethod
     def welcome_email(user):
@@ -80,4 +86,4 @@ class Util:
         )
         email_message = EmailMessage(subject=subject, body=message, to=[user.email])
         email_message.content_subtype = "html"
-        EmailThread(email_message).start()
+        send_email(email_message)

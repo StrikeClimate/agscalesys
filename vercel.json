@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "agscalesys/asgi.py",
+            "use": "@vercel/python",
+            "config": {
+                "runtime": "python3.12",
+                "maxLambdaSize": "15mb"
+            }
+        },
+        {
+            "src": "build_files.sh",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "staticfiles"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "agscalesys/asgi.py"
+        }
+    ]
+}
